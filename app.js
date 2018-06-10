@@ -2,8 +2,9 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const logger = require('morgan')
 const cors = require('cors')
-const db = require('./db')
-const auth = require('./auth')
+const auth = require('./api/auth')
+const board = require('./api/board')
+const authService = require('./auth')
 const app = express()
 
 app.use(cors())
@@ -11,37 +12,29 @@ app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
-app.get('/home', async (req, res) => {
-  let user
-  try {
-    user = auth.verify(req.headers.authorization)
-  } catch (e) {
+app.post('/login', auth.login)
 
-  }
+app.post('/boards', authService.ensureAuth(), board.create)
+app.get('/boards', authService.ensureAuth(), board.query)
+app.get('/boards/:id', authService.ensureAuth(), board.get)
+app.put('/boards/:id', authService.ensureAuth(), board.update)
+app.delete('/boards/:id', authService.ensureAuth(), board.destroy)
 
-  console.log(user)
-  user = user ? await db.findUserById(user.id) : null
-  const name = user ? user.name : 'World'
+// app.get('/lists', authService.ensureAuth(), list.query)
+// app.get('/lists/:id', authService.ensureAuth(), list.get)
+// app.post('/lists', authService.ensureAuth(), list.create)
+// app.put('/lists/:id', authService.ensureAuth(), list.update)
+// app.delete('/lists/:id', authService.ensureAuth(), list.destroy)
 
-  res.json({ greeting: `Hello ${name}` })
-})
+// app.get('/cards', authService.ensureAuth(), card.query)
+// app.get('/cards/:id', authService.ensureAuth(), card.get)
+// app.post('/cards', authService.ensureAuth(), card.create)
+// app.put('/cards/:id', authService.ensureAuth(), card.update)
+// app.delete('/cards/:id', authService.ensureAuth(), card.destroy)
 
-app.get('/me', auth.ensureAuth(), async (req, res) => {
-  const user = await db.findUserById(req.user.id)
-  const accessLog = await db.findAccessLog({ userId: user.id })
-  res.json({ user, accessLog })
-})
 
-app.post('/login', async (req, res) => {
-  const { email, password } = req.body
 
-  const user = await db.findUser({ email, password })
-  if (!user || !user.id) return res.status(401).json({ error: 'Login failure' })
-
-  await db.createAccessLog({ userId: user.id })
-  const accessToken = auth.signToken(user.id)
-  res.json({ accessToken })
-})
+app.use('/', (req, res) => res.send('This server is for lecutre-vue-trello\n'))
 
 app.use((err, req, res, next) => {
   console.log(err)
