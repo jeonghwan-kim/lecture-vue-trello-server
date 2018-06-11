@@ -38,9 +38,16 @@ Board.hasMany(List)
 const Card = sequelize.define('card', {
   title: {
     type: Sequelize.STRING
+  },
+  description: {
+    type: Sequelize.TEXT
+  },
+  pos: {
+    type: Sequelize.DOUBLE,
+    defaultValue: 65535
   }
 })
-Card.belongsTo(List)
+List.hasMany(Card)
 
 module.exports = { 
   sequelize, 

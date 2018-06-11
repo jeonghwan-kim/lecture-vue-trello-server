@@ -2,9 +2,12 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const logger = require('morgan')
 const cors = require('cors')
+
+const authService = require('./auth')
 const auth = require('./api/auth')
 const board = require('./api/board')
-const authService = require('./auth')
+const card = require('./api/card')
+
 const app = express()
 
 app.use(cors())
@@ -26,10 +29,10 @@ app.delete('/boards/:id', authService.ensureAuth(), board.destroy)
 // app.put('/lists/:id', authService.ensureAuth(), list.update)
 // app.delete('/lists/:id', authService.ensureAuth(), list.destroy)
 
+app.post('/cards', authService.ensureAuth(), card.create)
 // app.get('/cards', authService.ensureAuth(), card.query)
-// app.get('/cards/:id', authService.ensureAuth(), card.get)
-// app.post('/cards', authService.ensureAuth(), card.create)
-// app.put('/cards/:id', authService.ensureAuth(), card.update)
+app.get('/cards/:id', authService.ensureAuth(), card.get)
+app.put('/cards/:id', authService.ensureAuth(), card.update)
 // app.delete('/cards/:id', authService.ensureAuth(), card.destroy)
 
 

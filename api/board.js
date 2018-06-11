@@ -14,13 +14,7 @@ const create = async (req, res) => {
     {title: 'Done', boardId: board.id},
   ])
   
-  const item = await models.Board.findOne({ 
-    where: {id: board.dataValues.id},
-    include: [{
-      model: models.List,
-    }]
-  })
-  res.status(201).json({ item })
+  res.status(201).json({ item: board })
 }
 
 const query = async (req, res) => {
@@ -33,7 +27,12 @@ const get = async (req, res) => {
   const { id } = req.params
   const item = await models.Board.findOne({ 
     where: {id},
-    include: [models.List]
+    include: [{
+      model: models.List,
+      include: [{
+        model: models.Card
+      }]
+    }]
   })
   if (!item) return res.status(404).end()
   res.json({ item })
