@@ -6,8 +6,8 @@ models.sequelize.sync({
   force: true
 }).then(_=> {
   const user = models.User.build({
-    email: 'chris@email.com',
-    password: '123456',
+    email: 'test@test.com',
+    password: '123123',
     name: 'Chris'
   })
   user.save()

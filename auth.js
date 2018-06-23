@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const secret = 'token secret';
-const expiresIn = 24 * 60 * 60; // 24h
+const expiresIn = 365 * 24 * 3600; // 365 days
 
 const auth = {
   signToken(id) {
