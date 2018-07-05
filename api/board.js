@@ -26,15 +26,19 @@ const query = async (req, res) => {
 const get = async (req, res) => {
   const { id } = req.params
   const item = await models.Board.findOne({ 
-    where: {id},
+    where: { id },
     include: [{
       model: models.List,
       include: [{
-        model: models.Card
+        model: models.Card,
       }]
-    }]
+    }],
   })
   if (!item) return res.status(404).end()
+
+  item.lists.forEach(list => {
+    list.cards.sort((a, b) => a.pos - b.pos)
+  })
   res.json({ item })
 }
 
