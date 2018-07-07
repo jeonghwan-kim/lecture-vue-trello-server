@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize')
+const Op = Sequelize.Op
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
@@ -31,6 +32,10 @@ Board.belongsTo(User)
 const List = sequelize.define('list', {
   title: {
     type: Sequelize.STRING
+  },
+  pos: {
+    type: Sequelize.DOUBLE,
+    defaultValue: 65535
   }
 })
 Board.hasMany(List)
@@ -51,6 +56,7 @@ List.hasMany(Card)
 
 module.exports = { 
   sequelize, 
+  Op,
   User,
   Board,
   List,

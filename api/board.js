@@ -9,9 +9,9 @@ const create = async (req, res) => {
   const board = models.Board.build({ title, userId })
   await board.save()
   await models.List.bulkCreate([
-    {title: 'Todo', boardId: board.id},
-    {title: 'Doing', boardId: board.id},
-    {title: 'Done', boardId: board.id},
+    { title: 'Todo', pos: 65535,  boardId: board.id},
+    { title: 'Doing', pos: 65535 * 2, boardId: board.id},
+    { title: 'Done', pos: 65535 * 4, boardId: board.id},
   ])
   
   res.status(201).json({ item: board })
@@ -36,9 +36,11 @@ const get = async (req, res) => {
   })
   if (!item) return res.status(404).end()
 
+  item.lists.sort((a, b) => a.pos - b.pos)
   item.lists.forEach(list => {
     list.cards.sort((a, b) => a.pos - b.pos)
   })
+  
   res.json({ item })
 }
 
