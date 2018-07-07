@@ -25,6 +25,10 @@ const User = sequelize.define('user', {
 const Board = sequelize.define('board', {
   title: {
     type: Sequelize.STRING
+  },
+  bgColor: {
+    type: Sequelize.STRING,
+    defaultValue: 'rgb(0, 121, 191)'
   }
 })
 Board.belongsTo(User)

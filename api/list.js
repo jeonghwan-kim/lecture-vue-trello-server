@@ -1,5 +1,30 @@
 const models = require('../models')
 
+const create = async (req, res) => {
+  const userId = req.user.id
+  let { title, boardId, pos } = req.body
+
+  if (!title) res.status(400).end('no title')
+  if (!boardId) res.status(400).end('no boardId')
+  if (!pos) res.status(400).end('no pos')
+
+  const list = models.List.build({ title, pos, boardId, userId })
+  await list.save()
+
+  res.status(201).json({ item: list })
+}
+
+const get = async (req, res) => {
+  const { id } = req.params
+  if (!id) return res.status(400).json({ error: 'no id' })
+
+  const card = await models.Card.findOne({
+    where: { id }
+  })
+
+  res.json({ item: card })
+}
+
 const update = async (req, res) => {
   const {id} = req.params
   let body = req.body
@@ -48,6 +73,7 @@ const destroy = async (req, res) => {
 }
 
 module.exports = {
+  create,
   update,
   destroy
 }

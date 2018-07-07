@@ -40,24 +40,29 @@ const get = async (req, res) => {
   item.lists.forEach(list => {
     list.cards.sort((a, b) => a.pos - b.pos)
   })
-  
+
   res.json({ item })
 }
 
 const update = async (req, res) => {
   const { id } = req.params
-  let item = await models.Board.findOne({ where: { id } })
+  let body = req.body
 
-  if (!item) return res.status(404).end()
+  let board = await models.Board.findOne({ where: { id } })
 
-  let { title } = req.body
-  title = title.trim()
+  if (!board) return res.status(404).end()
 
-  if (!title) res.status(400).end('no title')
+  Object.keys(body).forEach(key => {
+    let value = body[key]
+    if (typeof value === 'string') value = value.trim()
 
-  item.title = title
-  await item.save()
-  res.json({ item })
+    if (!value) return
+    board[key] = value
+  })
+
+  await board.save()
+
+  res.json({ item: board })
 }
 
 const destroy = async (req, res) => {

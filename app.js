@@ -26,7 +26,7 @@ app.delete('/boards/:id', authService.ensureAuth(), board.destroy)
 
 // app.get('/lists', authService.ensureAuth(), list.query)
 // app.get('/lists/:id', authService.ensureAuth(), list.get)
-// app.post('/lists', authService.ensureAuth(), list.create)
+app.post('/lists', authService.ensureAuth(), list.create)
 app.put('/lists/:id', authService.ensureAuth(), list.update)
 app.delete('/lists/:id', authService.ensureAuth(), list.destroy)
 
