@@ -48,8 +48,15 @@ const update = async (req, res) => {
   res.json({ item: card })
 }
 
+const destroy = async (req, res) => {
+  const { id } = req.params
+  await models.Card.destroy({ where: { id } })
+  res.status(204).end()
+}
+
 module.exports = {
   create,
   get,
-  update
+  update,
+  destroy
 }

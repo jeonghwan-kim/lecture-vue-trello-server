@@ -34,7 +34,7 @@ app.post('/cards', authService.ensureAuth(), card.create)
 // app.get('/cards', authService.ensureAuth(), card.query)
 app.get('/cards/:id', authService.ensureAuth(), card.get)
 app.put('/cards/:id', authService.ensureAuth(), card.update)
-// app.delete('/cards/:id', authService.ensureAuth(), card.destroy)
+app.delete('/cards/:id', authService.ensureAuth(), card.destroy)
 
 
 
