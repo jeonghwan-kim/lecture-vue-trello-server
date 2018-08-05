@@ -19,6 +19,6 @@
   },
   "devDependencies": {
     "nodemon": "^1.17.5",
-    "sqlite3": "^4.0.0"
+    "sqlite3": "^4.0.2"
   }
 }

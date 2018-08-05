@@ -15,6 +15,7 @@ app.use(cors())
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.static('public'))
 
 app.post('/login', auth.login)
 
@@ -36,13 +37,18 @@ app.get('/cards/:id', authService.ensureAuth(), card.get)
 app.put('/cards/:id', authService.ensureAuth(), card.update)
 app.delete('/cards/:id', authService.ensureAuth(), card.destroy)
 
+const startT = Date.now()
+app.use('/health', (_, res) => res.json({time: Date.now() - startT}))
 
-
-app.use('/', (req, res) => res.send('This server is for lecutre-vue-trello\n'))
+app.use((req, res, next) => {
+  res.status = 404
+  next(Error('not found'))
+})
 
 app.use((err, req, res, next) => {
   console.log(err)
-  res.json({ error: err.message })
+  res.status(res.statusCode || 500)
+  res.json({ error: err.message || 'internal server error' })
 })
 
 module.exports = app

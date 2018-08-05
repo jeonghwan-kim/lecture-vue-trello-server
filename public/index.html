@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .item {
+      padding: 10px;
+    }
+    .item>div {
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <h1>API List</h1>
+  <div class="item">
+    <div>Helath</div>
+    <code>curl localhost:3000/health</code>
+  </div>
+  <div class="item">
+    <div>Login</div>
+    <code>curl -X POST localhost:3000/login -d 'email=test@test.com&password=123123'</code>
+  </div>
+  <div class="item">
+    <div>Get board list</div>
+    <code>curl -X GET localhost:3000/boards -H 'Authorization: Bearer token'</code>
+  </div>
+  <div class="item">
+    <div>Get board item</div>
+    <code>curl -X GET localhost:3000/boards/1 -H 'Authorization: Bearer token'</code>
+  </div>
+</body>
+</html>
