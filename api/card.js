@@ -38,9 +38,9 @@ const update = async (req, res) => {
   Object.keys(body).forEach(key => {
     let value = body[key]
     if (typeof value === 'string') value = value.trim()
-    
-    if (!value) return 
-    card[key] = value
+    if (key === 'description' || value)  {
+      card[key] = value
+    }
   })
 
   await card.save()
