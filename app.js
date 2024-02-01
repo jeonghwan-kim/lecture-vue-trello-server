@@ -41,7 +41,7 @@ const startT = Date.now()
 app.use('/health', (_, res) => res.json({time: Date.now() - startT}))
 
 app.use((req, res, next) => {
-  res.status = 404
+  res.statusCode = 404;
   next(Error('not found'))
 })
 
